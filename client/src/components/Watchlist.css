@@ -1,0 +1,55 @@
+.watchlist {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 36px 24px;
+}
+.watchlist-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.watchlist-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+.watchlist-sub { font-size: 13px; color: var(--text-muted); }
+
+.add-company-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.lookup-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.lookup-form input { flex: 1; }
+.lookup-hint { font-size: 12px; color: var(--text-muted); }
+
+.lookup-result {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-top: 14px;
+}
+.lookup-result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+.watchlist-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

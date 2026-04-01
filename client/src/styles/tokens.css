@@ -1,0 +1,53 @@
+:root {
+  /* Colors */
+  --bg: #f8f9f7;
+  --surface: #ffffff;
+  --surface2: #f2f4f1;
+  --border: #e4e8e2;
+  --border-subtle: #eff1ed;
+
+  --text: #1a1f1a;
+  --text-secondary: #4a5248;
+  --text-muted: #7a8578;
+
+  --accent: #1e6b4a;
+  --accent-light: #e8f3ee;
+  --accent-bright: #27895f;
+
+  /* Sector colors */
+  --climate: #1e6b4a;
+  --climate-bg: #e8f3ee;
+  --climate-border: #b8d9c8;
+
+  --health: #1a5c7a;
+  --health-bg: #e6f2f8;
+  --health-border: #b3d4e5;
+
+  --education: #7a4f1a;
+  --education-bg: #fdf0e0;
+  --education-border: #e8c99a;
+
+  --other: #4a4a6a;
+  --other-bg: #ededf5;
+  --other-border: #c8c8e0;
+
+  /* Fit score */
+  --score-high: #1e6b4a;
+  --score-high-bg: #e8f3ee;
+  --score-mid: #7a6a1a;
+  --score-mid-bg: #fdf5e0;
+  --score-low: #6a6a6a;
+  --score-low-bg: #f0f0f0;
+
+  /* Spacing */
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+
+  /* Typography */
+  --font: 'Inter', -apple-system, sans-serif;
+}

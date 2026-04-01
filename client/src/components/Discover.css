@@ -1,0 +1,72 @@
+.discover {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 36px 24px;
+}
+.discover-header {
+  margin-bottom: 28px;
+}
+.discover-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+.discover-sub { font-size: 13px; color: var(--text-muted); }
+
+.discover-cta {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.discover-cta-text strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.discover-cta-text p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 480px;
+  line-height: 1.5;
+}
+.discover-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 10px 22px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.discover-error {
+  background: #fdf0f0;
+  border: 1px solid #f0b8b8;
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  font-size: 13px;
+  color: #8b2020;
+  margin-bottom: 24px;
+}
+
+.discover-results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.discover-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

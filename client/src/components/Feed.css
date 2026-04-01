@@ -1,0 +1,42 @@
+.feed {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 36px 24px;
+}
+
+.feed-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.feed-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+.feed-sub { font-size: 13px; color: var(--text-muted); }
+
+.feed-filters {
+  display: flex;
+  gap: 4px;
+  background: var(--surface2);
+  padding: 3px;
+  border-radius: var(--radius);
+}
+.filter-btn {
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.filter-btn.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-sm); }
+.filter-btn:hover:not(.active) { color: var(--text); }
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
