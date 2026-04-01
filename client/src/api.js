@@ -37,6 +37,9 @@ export const api = {
   syncAll: () => req('POST', '/sync'),
   syncCompany: (id) => req('POST', `/sync/${id}`),
 
+  // Paste
+  pasteJob: (data) => req('POST', '/paste', data),
+
   // AI
   discover: () => req('POST', '/ai/discover'),
   lookupCompany: (name) => req('POST', '/ai/lookup-company', { name }),

@@ -8,6 +8,7 @@ import companiesRouter from './routes/companies.js';
 import jobsRouter from './routes/jobs.js';
 import syncRouter from './routes/sync.js';
 import aiRouter from './routes/ai.js';
+import pasteRouter from './routes/paste.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -22,6 +23,7 @@ app.use('/api/companies', companiesRouter);
 app.use('/api/jobs', jobsRouter);
 app.use('/api/sync', syncRouter);
 app.use('/api/ai', aiRouter);
+app.use('/api/paste', pasteRouter);
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
 if (isProd) {

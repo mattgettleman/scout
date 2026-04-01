@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../api.js';
 import JobCard from './JobCard.jsx';
+import PasteModal from './PasteModal.jsx';
 import './Feed.css';
 
 export default function Feed({ onCountChange }) {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all | saved
+  const [showPaste, setShowPaste] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -29,6 +31,11 @@ export default function Feed({ onCountChange }) {
     });
   };
 
+  const handlePasteAdded = (job) => {
+    setJobs(prev => [job, ...prev]);
+    onCountChange?.(c => c + 1);
+  };
+
   const visible = filter === 'saved' ? jobs.filter(j => j.saved) : jobs;
 
   return (
@@ -38,9 +45,12 @@ export default function Feed({ onCountChange }) {
           <h1 className="feed-title">Feed</h1>
           <p className="feed-sub">{jobs.length} new role{jobs.length !== 1 ? 's' : ''} at companies you're watching</p>
         </div>
-        <div className="feed-filters">
-          <button className={`filter-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
-          <button className={`filter-btn ${filter === 'saved' ? 'active' : ''}`} onClick={() => setFilter('saved')}>Saved</button>
+        <div className="feed-controls">
+          <button className="paste-btn" onClick={() => setShowPaste(true)}>+ Add Role</button>
+          <div className="feed-filters">
+            <button className={`filter-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
+            <button className={`filter-btn ${filter === 'saved' ? 'active' : ''}`} onClick={() => setFilter('saved')}>Saved</button>
+          </div>
         </div>
       </div>
 
@@ -54,8 +64,8 @@ export default function Feed({ onCountChange }) {
           </div>
           <div className="empty-state-body">
             {filter === 'saved'
-              ? 'Star roles you want to revisit and they\'ll appear here.'
-              : 'Sync your watchlist to pull in new roles, or add more companies to watch.'}
+              ? "Star roles you want to revisit and they'll appear here."
+              : 'Sync your watchlist to pull in new roles, or paste one in manually.'}
           </div>
         </div>
       ) : (
@@ -64,6 +74,13 @@ export default function Feed({ onCountChange }) {
             <JobCard key={job.id} job={job} onUpdate={handleJobUpdate} />
           ))}
         </div>
+      )}
+
+      {showPaste && (
+        <PasteModal
+          onClose={() => setShowPaste(false)}
+          onAdded={handlePasteAdded}
+        />
       )}
     </div>
   );

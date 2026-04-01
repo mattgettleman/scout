@@ -1,19 +1,9 @@
-const ROLE_KEYWORDS = [
-  'chief of staff', 'coo', 'chief operating', 'head of operations', 'head of business',
-  'vp of operations', 'vp operations', 'director of operations', 'director, operations',
-  'business operations', 'product operations', 'technical program', 'program manager',
-  'strategy', 'head of strategy', 'general manager', 'operations lead', 'ops lead'
-];
-
-function matchesRole(title) {
-  const t = title.toLowerCase();
-  return ROLE_KEYWORDS.some(k => t.includes(k));
-}
+import { matchesRole } from './keywords.js';
 
 export async function fetchLever(company) {
   const url = `https://api.lever.co/v0/postings/${company.ats_slug}?mode=json`;
   const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
-  if (res.status === 404) return []; // slug is wrong or company not on Lever
+  if (res.status === 404) return [];
   if (!res.ok) throw new Error(`Lever API error: ${res.status}`);
   const jobs = await res.json();
 

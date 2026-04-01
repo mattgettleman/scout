@@ -1,14 +1,4 @@
-const ROLE_KEYWORDS = [
-  'chief of staff', 'coo', 'chief operating', 'head of operations', 'head of business',
-  'vp of operations', 'vp operations', 'director of operations', 'director, operations',
-  'business operations', 'product operations', 'technical program', 'program manager',
-  'strategy', 'head of strategy', 'general manager', 'operations lead', 'ops lead'
-];
-
-function matchesRole(title) {
-  const t = title.toLowerCase();
-  return ROLE_KEYWORDS.some(k => t.includes(k));
-}
+import { matchesRole } from './keywords.js';
 
 export async function fetchAshby(company) {
   const url = `https://jobs.ashbyhq.com/api/non-user-facing/job-board/${company.ats_slug}`;

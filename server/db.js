@@ -57,6 +57,7 @@ export async function initDB() {
       seen BOOLEAN DEFAULT false,
       dismissed BOOLEAN DEFAULT false,
       saved BOOLEAN DEFAULT false,
+      manual BOOLEAN DEFAULT false,
       UNIQUE(company_id, external_id)
     )
   `);
@@ -93,13 +94,16 @@ export async function initDB() {
     await seedCompanies();
   }
 
+  // Add manual column if it doesn't exist yet (migration)
+  await pool.query(`ALTER TABLE jobs ADD COLUMN IF NOT EXISTS manual BOOLEAN DEFAULT false`);
+
   // Patch incorrect ATS slugs from initial seed
   const slugFixes = [
     { name: 'Watershed',      ats_slug: 'watershed',        ats_type: 'greenhouse' },
     { name: 'Color Health',   ats_slug: 'colorgenomics',    ats_type: 'greenhouse' },
     { name: 'Cityblock Health', ats_slug: 'cityblock',      ats_type: 'greenhouse' },
     { name: 'Devoted Health', ats_slug: 'devoted',          ats_type: 'greenhouse' },
-    { name: 'Handshake',      ats_slug: 'handshake-1',      ats_type: 'greenhouse' },
+    { name: 'Handshake',      ats_slug: 'handshake',        ats_type: 'greenhouse' },
     { name: 'Noodle',         ats_slug: 'noodle',           ats_type: 'greenhouse' },
     { name: 'Raptor Maps',    ats_slug: 'raptormaps',       ats_type: 'greenhouse' },
     { name: 'Nava',           ats_slug: 'navapbc',          ats_type: 'lever' },

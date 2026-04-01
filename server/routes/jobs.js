@@ -9,7 +9,7 @@ router.get('/feed', async (req, res) => {
       SELECT j.*, c.name as company_name, c.sector as company_sector, c.stage as company_stage
       FROM jobs j
       JOIN companies c ON j.company_id = c.id
-      WHERE j.seen = false AND j.dismissed = false AND c.on_watchlist = true
+      WHERE j.seen = false AND j.dismissed = false AND (c.on_watchlist = true OR j.manual = true)
       ORDER BY j.fit_score DESC NULLS LAST, j.fetched_at DESC
       LIMIT 100
     `);
