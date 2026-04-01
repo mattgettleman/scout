@@ -24,10 +24,10 @@ router.put('/', async (req, res) => {
         comp_floor = EXCLUDED.comp_floor,
         company_size_min = EXCLUDED.company_size_min,
         company_size_max = EXCLUDED.company_size_max,
-        resume_text = EXCLUDED.resume_text,
+        resume_text = COALESCE(EXCLUDED.resume_text, profile.resume_text),
         updated_at = NOW()
       RETURNING *
-    `, [target_roles, mission_sectors, comp_floor, company_size_min, company_size_max, resume_text]);
+    `, [target_roles, mission_sectors, comp_floor, company_size_min, company_size_max, resume_text ?? null]);
     res.json(rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });

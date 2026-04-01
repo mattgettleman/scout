@@ -4,6 +4,8 @@ import Nav from './components/Nav.jsx';
 import Feed from './components/Feed.jsx';
 import Watchlist from './components/Watchlist.jsx';
 import Discover from './components/Discover.jsx';
+import Saved from './components/Saved.jsx';
+import Settings from './components/Settings.jsx';
 
 export default function App() {
   const [view, setView] = useState('feed');
@@ -54,6 +56,8 @@ export default function App() {
         {view === 'feed' && <Feed onCountChange={setFeedCount} />}
         {view === 'watchlist' && <Watchlist />}
         {view === 'discover' && <Discover />}
+        {view === 'saved' && <Saved />}
+        {view === 'settings' && <Settings />}
       </div>
     </div>
   );

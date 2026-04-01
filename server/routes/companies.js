@@ -39,11 +39,18 @@ router.get('/:id', async (req, res) => {
   try {
     const { rows: companies } = await pool.query('SELECT * FROM companies WHERE id = $1', [req.params.id]);
     if (!companies.length) return res.status(404).json({ error: 'Not found' });
-    const { rows: jobs } = await pool.query(
-      'SELECT * FROM jobs WHERE company_id = $1 AND dismissed = false ORDER BY fit_score DESC NULLS LAST, posted_at DESC NULLS LAST',
-      [req.params.id]
-    );
-    res.json({ ...companies[0], jobs });
+    const company = companies[0];
+    // Apply per-company role filter if set
+    let jobQuery = 'SELECT * FROM jobs WHERE company_id = $1 AND dismissed = false';
+    const jobParams = [req.params.id];
+    if (company.role_filter?.length) {
+      const conditions = company.role_filter.map((_, idx) => `title ILIKE $${idx + 2}`);
+      jobQuery += ` AND (${conditions.join(' OR ')})`;
+      company.role_filter.forEach(f => jobParams.push(`%${f}%`));
+    }
+    jobQuery += ' ORDER BY fit_score DESC NULLS LAST, posted_at DESC NULLS LAST';
+    const { rows: jobs } = await pool.query(jobQuery, jobParams);
+    res.json({ ...company, jobs });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -51,7 +58,7 @@ router.get('/:id', async (req, res) => {
 
 router.patch('/:id', async (req, res) => {
   try {
-    const allowed = ['name', 'website', 'description', 'sector', 'stage', 'employee_count', 'ats_type', 'ats_slug', 'career_page_url', 'on_watchlist'];
+    const allowed = ['name', 'website', 'description', 'sector', 'stage', 'employee_count', 'ats_type', 'ats_slug', 'career_page_url', 'on_watchlist', 'role_filter'];
     const updates = [];
     const params = [];
     let i = 1;

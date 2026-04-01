@@ -94,8 +94,9 @@ export async function initDB() {
     await seedCompanies();
   }
 
-  // Add manual column if it doesn't exist yet (migration)
+  // Migrations
   await pool.query(`ALTER TABLE jobs ADD COLUMN IF NOT EXISTS manual BOOLEAN DEFAULT false`);
+  await pool.query(`ALTER TABLE companies ADD COLUMN IF NOT EXISTS role_filter TEXT[] DEFAULT '{}'`);
 
   // Patch incorrect ATS slugs from initial seed
   const slugFixes = [

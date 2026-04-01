@@ -18,6 +18,8 @@ export default function CompanyCard({ company, onUpdate, onRemove, mode = 'watch
   const [syncing, setSyncing] = useState(false);
   const [syncResult, setSyncResult] = useState(null);
   const [adding, setAdding] = useState(false);
+  const [newFilter, setNewFilter] = useState('');
+  const [savingFilter, setSavingFilter] = useState(false);
 
   const loadJobs = async () => {
     const data = await api.getCompany(company.id);
@@ -60,6 +62,30 @@ export default function CompanyCard({ company, onUpdate, onRemove, mode = 'watch
 
   const handleJobUpdate = (jobId, updates) => {
     setJobs(prev => prev?.map(j => j.id === jobId ? { ...j, ...updates } : j));
+  };
+
+  const saveFilter = async (filters) => {
+    setSavingFilter(true);
+    try {
+      const updated = await api.updateCompany(company.id, { role_filter: filters });
+      onUpdate(company.id, { role_filter: updated.role_filter });
+      // Reload jobs with new filter
+      const data = await api.getCompany(company.id);
+      setJobs(data.jobs || []);
+    } finally { setSavingFilter(false); }
+  };
+
+  const addFilter = async () => {
+    const trimmed = newFilter.trim();
+    if (!trimmed) return;
+    const current = company.role_filter || [];
+    if (current.includes(trimmed)) { setNewFilter(''); return; }
+    setNewFilter('');
+    await saveFilter([...current, trimmed]);
+  };
+
+  const removeFilter = async (f) => {
+    await saveFilter((company.role_filter || []).filter(x => x !== f));
   };
 
   const visibleJobs = jobs?.filter(j => !j.dismissed) || [];
@@ -125,6 +151,33 @@ export default function CompanyCard({ company, onUpdate, onRemove, mode = 'watch
       {syncResult && (
         <div className={`sync-result ${syncResult.error ? 'error' : 'ok'}`}>
           {syncResult.error ? `Error: ${syncResult.error}` : `+${syncResult.added || 0} new roles (${syncResult.fetched || 0} fetched)`}
+        </div>
+      )}
+
+      {expanded && mode === 'watchlist' && (
+        <div className="company-role-filters" onClick={e => e.stopPropagation()}>
+          <div className="role-filter-label">Role filters {savingFilter && <span className="filter-saving">saving…</span>}</div>
+          <div className="role-filter-chips">
+            {(company.role_filter || []).map(f => (
+              <span key={f} className="role-filter-chip">
+                {f}
+                <button className="role-chip-remove" onClick={() => removeFilter(f)}>×</button>
+              </span>
+            ))}
+            <div className="role-filter-add">
+              <input
+                className="role-filter-input"
+                type="text"
+                placeholder="+ Add filter…"
+                value={newFilter}
+                onChange={e => setNewFilter(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && addFilter()}
+              />
+            </div>
+          </div>
+          {(company.role_filter || []).length > 0 && (
+            <div className="role-filter-hint">Only jobs matching these keywords will show</div>
+          )}
         </div>
       )}
 

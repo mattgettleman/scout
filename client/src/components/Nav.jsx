@@ -28,11 +28,24 @@ export default function Nav({ view, onViewChange, feedCount, syncing, onSync }) 
         >
           Discover
         </button>
+        <button
+          className={`nav-tab ${view === 'saved' ? 'active' : ''}`}
+          onClick={() => onViewChange('saved')}
+        >
+          Saved
+        </button>
       </nav>
       <div className="nav-actions">
         <button className={`sync-btn ${syncing ? 'syncing' : ''}`} onClick={onSync} disabled={syncing}>
           {syncing ? <span className="spinner" /> : '↻'}
           {syncing ? 'Syncing…' : 'Sync Jobs'}
+        </button>
+        <button
+          className={`nav-settings ${view === 'settings' ? 'active' : ''}`}
+          onClick={() => onViewChange(view === 'settings' ? 'feed' : 'settings')}
+          title="Settings"
+        >
+          ⚙
         </button>
       </div>
     </header>

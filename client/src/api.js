@@ -42,5 +42,6 @@ export const api = {
 
   // AI
   discover: () => req('POST', '/ai/discover'),
+  discoverRoles: () => req('POST', '/ai/discover-roles'),
   lookupCompany: (name) => req('POST', '/ai/lookup-company', { name }),
 };

@@ -101,6 +101,63 @@ Return ONLY a valid JSON array, no markdown, no explanation:
   }
 });
 
+// POST /api/ai/discover-roles — suggest (company, role) pairings worth investigating
+router.post('/discover-roles', async (req, res) => {
+  try {
+    const { rows: profileRows } = await pool.query('SELECT * FROM profile WHERE id = 1');
+    const { rows: watchlistRows } = await pool.query(
+      "SELECT name FROM companies WHERE on_watchlist = true"
+    );
+
+    const profile = profileRows[0] || {};
+    const watching = watchlistRows.map(c => c.name).join(', ');
+
+    const prompt = `You are a career research assistant helping a senior operations and strategy leader find specific roles worth pursuing.
+
+Candidate profile:
+- Target roles: ${(profile.target_roles || []).join(', ')}
+- Mission sectors: ${(profile.mission_sectors || []).join(', ')}
+- Target company size: ${profile.company_size_min}–${profile.company_size_max} employees
+- Base comp floor: $${profile.comp_floor?.toLocaleString()}
+- Already watching: ${watching || 'none yet'}
+
+Suggest 10 specific (company, role type) pairings this person should investigate. These are informed recommendations — companies likely to have or regularly post these role types given their stage and growth. Don't suggest roles at companies already on the watchlist.
+
+Requirements:
+- Companies in climate tech, health/healthcare access, or education/workforce development
+- 50–500 employees (Series B–D stage ideal)
+- Role types from their target list: COO, Chief of Staff, Head of Operations, VP Business Operations, Director of Business Operations, Head of Business Operations, VP Operations, Technical Program Manager
+- "Do no harm" — no ad tech, surveillance, predatory finance
+
+Return ONLY a valid JSON array, no markdown, no explanation:
+[
+  {
+    "company": "Company Name",
+    "role_type": "Chief of Staff",
+    "website": "https://...",
+    "sector": ["climate"|"health"|"education"],
+    "stage": "series-b"|"series-c"|"series-d"|"growth",
+    "employee_count": "50-200"|"200-500",
+    "ats_type": "greenhouse"|"lever"|"ashby"|"other",
+    "ats_slug": "slug-or-null",
+    "why": "2-3 sentence explanation of why this role at this company is a strong fit"
+  }
+]`;
+
+    const message = await anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 3000,
+      messages: [{ role: 'user', content: prompt }]
+    });
+
+    const raw = message.content[0].text.trim();
+    const roles = JSON.parse(raw);
+    res.json({ roles });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /api/ai/lookup-company — given a company name, return mission/ATS info
 router.post('/lookup-company', async (req, res) => {
   try {

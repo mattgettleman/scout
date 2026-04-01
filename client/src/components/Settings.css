@@ -1,0 +1,183 @@
+.settings {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.settings-loading {
+  padding: 48px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.settings-header {
+  margin-bottom: 36px;
+}
+.settings-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.settings-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.settings-section {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  background: var(--surface);
+}
+
+.settings-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.settings-section-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* Role chips */
+.role-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 32px;
+}
+
+.role-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--climate-border);
+  border-radius: 20px;
+  padding: 4px 10px 4px 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.role-chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+.role-chip-remove:hover { opacity: 1; }
+
+.role-add-row {
+  display: flex;
+  gap: 8px;
+}
+
+.role-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+}
+.role-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Sector checkboxes */
+.sector-checkboxes {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sector-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.sector-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+
+/* Comp input */
+.comp-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.comp-prefix {
+  font-size: 16px;
+  color: var(--text-muted);
+}
+.comp-input {
+  width: 140px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+.comp-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Size range */
+.size-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.size-input {
+  width: 90px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+.size-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.size-sep, .size-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Save */
+.settings-save-row {
+  display: flex;
+  justify-content: flex-end;
+}
+.settings-save-btn {
+  min-width: 140px;
+}

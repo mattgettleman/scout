@@ -10,6 +10,9 @@ router.get('/feed', async (req, res) => {
       FROM jobs j
       JOIN companies c ON j.company_id = c.id
       WHERE j.seen = false AND j.dismissed = false AND (c.on_watchlist = true OR j.manual = true)
+        AND (j.manual = true OR cardinality(c.role_filter) = 0 OR EXISTS (
+          SELECT 1 FROM unnest(c.role_filter) AS rf WHERE j.title ILIKE '%' || rf || '%'
+        ))
       ORDER BY j.fit_score DESC NULLS LAST, j.fetched_at DESC
       LIMIT 100
     `);
