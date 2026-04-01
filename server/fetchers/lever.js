@@ -13,6 +13,7 @@ function matchesRole(title) {
 export async function fetchLever(company) {
   const url = `https://api.lever.co/v0/postings/${company.ats_slug}?mode=json`;
   const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  if (res.status === 404) return []; // slug is wrong or company not on Lever
   if (!res.ok) throw new Error(`Lever API error: ${res.status}`);
   const jobs = await res.json();
 

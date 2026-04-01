@@ -93,6 +93,28 @@ export async function initDB() {
     await seedCompanies();
   }
 
+  // Patch incorrect ATS slugs from initial seed
+  const slugFixes = [
+    { name: 'Watershed',      ats_slug: 'watershed',        ats_type: 'greenhouse' },
+    { name: 'Color Health',   ats_slug: 'colorgenomics',    ats_type: 'greenhouse' },
+    { name: 'Cityblock Health', ats_slug: 'cityblock',      ats_type: 'greenhouse' },
+    { name: 'Devoted Health', ats_slug: 'devoted',          ats_type: 'greenhouse' },
+    { name: 'Handshake',      ats_slug: 'handshake-1',      ats_type: 'greenhouse' },
+    { name: 'Noodle',         ats_slug: 'noodle',           ats_type: 'greenhouse' },
+    { name: 'Raptor Maps',    ats_slug: 'raptormaps',       ats_type: 'greenhouse' },
+    { name: 'Nava',           ats_slug: 'navapbc',          ats_type: 'lever' },
+    { name: 'Coursera',       ats_slug: 'coursera',         ats_type: 'lever' },
+    { name: 'Duolingo',       ats_slug: 'duolingo',         ats_type: 'lever' },
+    { name: 'Pachama',        ats_slug: 'pachama',          ats_type: 'lever' },
+    { name: 'Arcadia',        ats_slug: 'arcadia',          ats_type: 'greenhouse' },
+  ];
+  for (const fix of slugFixes) {
+    await pool.query(
+      'UPDATE companies SET ats_slug = $1, ats_type = $2 WHERE name = $3',
+      [fix.ats_slug, fix.ats_type, fix.name]
+    );
+  }
+
   console.log('DB initialized');
 }
 

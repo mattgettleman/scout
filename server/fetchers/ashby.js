@@ -13,6 +13,7 @@ function matchesRole(title) {
 export async function fetchAshby(company) {
   const url = `https://jobs.ashbyhq.com/api/non-user-facing/job-board/${company.ats_slug}`;
   const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  if (res.status === 404) return [];
   if (!res.ok) throw new Error(`Ashby API error: ${res.status}`);
   const data = await res.json();
 
