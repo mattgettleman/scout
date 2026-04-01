@@ -4,11 +4,55 @@ import './Settings.css';
 
 const ALL_SECTORS = ['climate', 'health', 'education', 'other'];
 
+const DISCOVERY_SOURCE_GROUPS = [
+  {
+    label: 'General databases',
+    sources: [
+      'Crunchbase (Series B/C companies)',
+      'AngelList / Wellfound',
+    ]
+  },
+  {
+    label: 'Climate VC portfolios',
+    sources: [
+      'Breakthrough Energy Ventures portfolio',
+      'DCVC (Data Collective) portfolio',
+      'Congruent Ventures portfolio',
+      'Prelude Ventures portfolio',
+    ]
+  },
+  {
+    label: 'Health VC portfolios',
+    sources: [
+      'Oak HC/FT portfolio',
+      'General Catalyst health portfolio',
+      'a16z Bio + Health portfolio',
+    ]
+  },
+  {
+    label: 'Education VC portfolios',
+    sources: [
+      'Learn Capital portfolio',
+      'NewSchools Venture Fund portfolio',
+    ]
+  },
+  {
+    label: 'Growth-stage funds',
+    sources: [
+      'Y Combinator alumni (Series B+)',
+      'a16z portfolio',
+      'Bessemer Venture Partners portfolio',
+      'Sequoia portfolio',
+    ]
+  },
+];
+
 export default function Settings() {
   const [profile, setProfile] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [newRole, setNewRole] = useState('');
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   useEffect(() => {
     api.getProfile().then(setProfile).catch(() => {});
@@ -38,6 +82,14 @@ export default function Settings() {
     );
   };
 
+  const toggleSource = (source) => {
+    const current = profile.discovery_sources || [];
+    update('discovery_sources', current.includes(source)
+      ? current.filter(s => s !== source)
+      : [...current, source]
+    );
+  };
+
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -47,6 +99,8 @@ export default function Settings() {
         comp_floor: profile.comp_floor,
         company_size_min: profile.company_size_min,
         company_size_max: profile.company_size_max,
+        discovery_sources: profile.discovery_sources || [],
+        discover_context: profile.discover_context || null,
       });
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
@@ -56,6 +110,8 @@ export default function Settings() {
   };
 
   if (!profile) return <div className="settings-loading">Loading…</div>;
+
+  const activeSources = profile.discovery_sources || [];
 
   return (
     <div className="settings">
@@ -142,6 +198,75 @@ export default function Settings() {
             />
             <span className="size-label">employees</span>
           </div>
+        </section>
+
+        {/* Discovery Sources */}
+        <section className="settings-section">
+          <h2 className="settings-section-title">Discovery Sources</h2>
+          <p className="settings-section-desc">
+            Tell Claude which ecosystems to draw from when finding companies and roles.
+            Claude's training includes knowledge of all these databases and portfolios.
+          </p>
+
+          <div className="source-groups">
+            {DISCOVERY_SOURCE_GROUPS.map(group => (
+              <div key={group.label} className="source-group">
+                <div className="source-group-label">{group.label}</div>
+                {group.sources.map(source => (
+                  <label key={source} className="source-option">
+                    <input
+                      type="checkbox"
+                      checked={activeSources.includes(source)}
+                      onChange={() => toggleSource(source)}
+                    />
+                    <span className="source-name">{source}</span>
+                  </label>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {activeSources.length > 0 && (
+            <div className="active-sources-summary">
+              {activeSources.length} source{activeSources.length !== 1 ? 's' : ''} active
+            </div>
+          )}
+        </section>
+
+        {/* Additional Context */}
+        <section className="settings-section">
+          <h2 className="settings-section-title">Additional Search Context</h2>
+          <p className="settings-section-desc">
+            Freeform instructions for AI discovery — location preferences, funding recency, culture signals, etc.
+          </p>
+          <textarea
+            className="context-textarea"
+            placeholder="e.g. Prioritize remote-first companies · Focus on companies that raised in the last 18 months · Avoid companies with recent layoffs"
+            value={profile.discover_context || ''}
+            onChange={e => update('discover_context', e.target.value || null)}
+            rows={3}
+          />
+        </section>
+
+        {/* What Claude Sees */}
+        <section className="settings-section preview-section">
+          <button className="preview-toggle" onClick={() => setPreviewOpen(o => !o)}>
+            <span>What Claude sees when you run Discover</span>
+            <span className={`preview-arrow ${previewOpen ? 'open' : ''}`}>›</span>
+          </button>
+
+          {previewOpen && (
+            <div className="preview-content">
+              <pre className="preview-text">{[
+                `Target roles: ${(profile.target_roles || []).join(', ')}`,
+                `Mission sectors: ${(profile.mission_sectors || []).join(', ')}`,
+                `Company size: ${profile.company_size_min}–${profile.company_size_max} employees`,
+                `Comp floor: $${(profile.comp_floor || 0).toLocaleString()}`,
+                activeSources.length ? `Discovery sources: ${activeSources.join(', ')}` : null,
+                profile.discover_context ? `Additional context: ${profile.discover_context}` : null,
+              ].filter(Boolean).join('\n')}</pre>
+            </div>
+          )}
         </section>
 
         <div className="settings-save-row">

@@ -53,6 +53,12 @@ router.post('/discover', async (req, res) => {
 
     const profile = profileRows[0] || {};
     const watchlist = watchlistRows.map(c => `${c.name} (${(c.sector || []).join('/')})`).join(', ');
+    const sourcesLine = (profile.discovery_sources || []).length
+      ? `- Draw from these ecosystems/databases: ${profile.discovery_sources.join(', ')}`
+      : '';
+    const contextLine = profile.discover_context
+      ? `- Additional search context: ${profile.discover_context}`
+      : '';
 
     const prompt = `You are a career research assistant helping a senior operations and strategy leader find mission-aligned companies for their job search.
 
@@ -63,6 +69,8 @@ Candidate profile:
 - Target stage: Series B or C
 - Base comp floor: $${profile.comp_floor?.toLocaleString()}
 - Already watching: ${watchlist || 'none yet'}
+${sourcesLine}
+${contextLine}
 
 Find 10 mission-aligned companies this person should consider. Requirements:
 - In climate tech, health/healthcare access, or education/workforce development
@@ -111,6 +119,12 @@ router.post('/discover-roles', async (req, res) => {
 
     const profile = profileRows[0] || {};
     const watching = watchlistRows.map(c => c.name).join(', ');
+    const sourcesLine = (profile.discovery_sources || []).length
+      ? `- Draw from these ecosystems/databases: ${profile.discovery_sources.join(', ')}`
+      : '';
+    const contextLine = profile.discover_context
+      ? `- Additional search context: ${profile.discover_context}`
+      : '';
 
     const prompt = `You are a career research assistant helping a senior operations and strategy leader find specific roles worth pursuing.
 
@@ -120,6 +134,8 @@ Candidate profile:
 - Target company size: ${profile.company_size_min}–${profile.company_size_max} employees
 - Base comp floor: $${profile.comp_floor?.toLocaleString()}
 - Already watching: ${watching || 'none yet'}
+${sourcesLine}
+${contextLine}
 
 Suggest 10 specific (company, role type) pairings this person should investigate. These are informed recommendations — companies likely to have or regularly post these role types given their stage and growth. Don't suggest roles at companies already on the watchlist.
 

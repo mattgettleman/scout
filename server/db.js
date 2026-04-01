@@ -97,6 +97,8 @@ export async function initDB() {
   // Migrations
   await pool.query(`ALTER TABLE jobs ADD COLUMN IF NOT EXISTS manual BOOLEAN DEFAULT false`);
   await pool.query(`ALTER TABLE companies ADD COLUMN IF NOT EXISTS role_filter TEXT[] DEFAULT '{}'`);
+  await pool.query(`ALTER TABLE profile ADD COLUMN IF NOT EXISTS discovery_sources TEXT[] DEFAULT '{}'`);
+  await pool.query(`ALTER TABLE profile ADD COLUMN IF NOT EXISTS discover_context TEXT`);
 
   // Patch incorrect ATS slugs from initial seed
   const slugFixes = [

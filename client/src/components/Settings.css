@@ -173,6 +173,118 @@
   color: var(--text-muted);
 }
 
+/* Discovery sources */
+.source-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.source-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.source-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 3px 0;
+}
+.source-option input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+.source-name {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.active-sources-summary {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 4px 10px;
+  background: var(--accent-light);
+  border-radius: 20px;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+/* Context textarea */
+.context-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.context-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.context-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Preview */
+.preview-section {
+  padding: 0;
+  overflow: hidden;
+}
+
+.preview-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+}
+.preview-toggle:hover { background: var(--surface2); }
+
+.preview-arrow {
+  font-size: 18px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+  display: inline-block;
+}
+.preview-arrow.open { transform: rotate(90deg); }
+
+.preview-content {
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  background: var(--bg);
+}
+
+.preview-text {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
 /* Save */
 .settings-save-row {
   display: flex;

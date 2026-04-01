@@ -14,10 +14,10 @@ router.get('/', async (req, res) => {
 
 router.put('/', async (req, res) => {
   try {
-    const { target_roles, mission_sectors, comp_floor, company_size_min, company_size_max, resume_text } = req.body;
+    const { target_roles, mission_sectors, comp_floor, company_size_min, company_size_max, resume_text, discovery_sources, discover_context } = req.body;
     const { rows } = await pool.query(`
-      INSERT INTO profile (id, target_roles, mission_sectors, comp_floor, company_size_min, company_size_max, resume_text, updated_at)
-      VALUES (1, $1, $2, $3, $4, $5, $6, NOW())
+      INSERT INTO profile (id, target_roles, mission_sectors, comp_floor, company_size_min, company_size_max, resume_text, discovery_sources, discover_context, updated_at)
+      VALUES (1, $1, $2, $3, $4, $5, $6, $7, $8, NOW())
       ON CONFLICT (id) DO UPDATE SET
         target_roles = EXCLUDED.target_roles,
         mission_sectors = EXCLUDED.mission_sectors,
@@ -25,9 +25,11 @@ router.put('/', async (req, res) => {
         company_size_min = EXCLUDED.company_size_min,
         company_size_max = EXCLUDED.company_size_max,
         resume_text = COALESCE(EXCLUDED.resume_text, profile.resume_text),
+        discovery_sources = EXCLUDED.discovery_sources,
+        discover_context = EXCLUDED.discover_context,
         updated_at = NOW()
       RETURNING *
-    `, [target_roles, mission_sectors, comp_floor, company_size_min, company_size_max, resume_text ?? null]);
+    `, [target_roles, mission_sectors, comp_floor, company_size_min, company_size_max, resume_text ?? null, discovery_sources ?? [], discover_context ?? null]);
     res.json(rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
